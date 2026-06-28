@@ -3,50 +3,860 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>ZHI Communitas</title>
+  <title>ZHI Communitas 知域</title>
+
   <style>
+    :root {
+      --bg: #f5f1e8;
+      --paper: #fffaf0;
+      --paper-2: #efe8dc;
+      --text: #243127;
+      --muted: #68746b;
+      --green: #4f7d52;
+      --deep-green: #2f4a35;
+      --brown: #9a6b45;
+      --line: rgba(36, 49, 39, 0.16);
+      --shadow: 0 18px 48px rgba(47, 74, 53, 0.12);
+      --radius: 24px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
     body {
       margin: 0;
-      min-height: 100vh;
+      background:
+        radial-gradient(circle at top left, rgba(79, 125, 82, 0.12), transparent 32%),
+        radial-gradient(circle at 80% 10%, rgba(154, 107, 69, 0.10), transparent 28%),
+        var(--bg);
+      color: var(--text);
+      font-family: -apple-system, BlinkMacSystemFont, "Noto Sans SC", "PingFang SC", "Helvetica Neue", Arial, sans-serif;
+      line-height: 1.7;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .page {
+      width: min(1120px, calc(100% - 40px));
+      margin: 0 auto;
+    }
+
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      backdrop-filter: blur(18px);
+      background: rgba(245, 241, 232, 0.82);
+      border-bottom: 1px solid var(--line);
+    }
+
+    .nav {
+      height: 72px;
       display: flex;
       align-items: center;
-      justify-content: center;
-      font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif;
-      background: #f5f1e8;
-      color: #2f3a2f;
+      justify-content: space-between;
     }
 
-    .card {
-      text-align: center;
-      padding: 48px 36px;
-      max-width: 520px;
-    }
-
-    h1 {
-      font-size: 40px;
-      margin-bottom: 12px;
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-weight: 700;
       letter-spacing: 0.02em;
     }
 
-    p {
-      font-size: 18px;
-      line-height: 1.7;
-      margin: 8px 0;
+    .logo {
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      background:
+        linear-gradient(135deg, rgba(79, 125, 82, 0.95), rgba(47, 74, 53, 0.95));
+      position: relative;
+      box-shadow: 0 6px 18px rgba(47, 74, 53, 0.25);
     }
 
-    .small {
-      margin-top: 24px;
+    .logo::after {
+      content: "";
+      position: absolute;
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: var(--bg);
+      top: 8px;
+      left: 10px;
+      opacity: 0.9;
+    }
+
+    nav {
+      display: flex;
+      gap: 24px;
       font-size: 14px;
-      opacity: 0.65;
+      color: var(--muted);
+    }
+
+    nav a:hover {
+      color: var(--deep-green);
+    }
+
+    .hero {
+      min-height: calc(100vh - 72px);
+      display: grid;
+      grid-template-columns: 1.1fr 0.9fr;
+      gap: 56px;
+      align-items: center;
+      padding: 72px 0 88px;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 7px 12px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      color: var(--green);
+      background: rgba(255, 250, 240, 0.6);
+      font-size: 13px;
+      margin-bottom: 24px;
+    }
+
+    .eyebrow::before {
+      content: "";
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--green);
+    }
+
+    h1 {
+      margin: 0;
+      font-family: Georgia, "Noto Serif SC", "Songti SC", serif;
+      font-size: clamp(46px, 8vw, 92px);
+      line-height: 0.96;
+      letter-spacing: -0.05em;
+      color: var(--deep-green);
+    }
+
+    .hero h1 span {
+      display: block;
+      font-size: clamp(34px, 5vw, 62px);
+      margin-top: 14px;
+      color: var(--text);
+      letter-spacing: -0.03em;
+    }
+
+    .lead {
+      margin: 28px 0 0;
+      max-width: 620px;
+      font-size: 20px;
+      color: #3e4b42;
+    }
+
+    .lead-en {
+      margin: 16px 0 0;
+      max-width: 620px;
+      color: var(--muted);
+      font-size: 16px;
+    }
+
+    .actions {
+      margin-top: 36px;
+      display: flex;
+      gap: 14px;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 13px 20px;
+      border-radius: 999px;
+      border: 1px solid var(--deep-green);
+      font-weight: 600;
+      font-size: 15px;
+      transition: 0.2s ease;
+    }
+
+    .btn.primary {
+      background: var(--deep-green);
+      color: white;
+    }
+
+    .btn.secondary {
+      background: rgba(255, 250, 240, 0.5);
+      color: var(--deep-green);
+    }
+
+    .btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 24px rgba(47, 74, 53, 0.15);
+    }
+
+    .hero-card {
+      background: rgba(255, 250, 240, 0.72);
+      border: 1px solid var(--line);
+      border-radius: 32px;
+      padding: 28px;
+      box-shadow: var(--shadow);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-card::before {
+      content: "";
+      position: absolute;
+      inset: 14px;
+      border: 1px solid rgba(36, 49, 39, 0.10);
+      border-radius: 24px;
+      pointer-events: none;
+    }
+
+    .note {
+      position: relative;
+      padding: 32px 28px;
+      background: var(--paper);
+      border-radius: 24px;
+      border: 1px solid rgba(36, 49, 39, 0.12);
+      min-height: 360px;
+    }
+
+    .note small {
+      color: var(--brown);
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      font-weight: 700;
+      font-size: 12px;
+    }
+
+    .note h2 {
+      margin: 24px 0 16px;
+      font-family: Georgia, "Noto Serif SC", serif;
+      font-size: 34px;
+      line-height: 1.2;
+      color: var(--deep-green);
+    }
+
+    .note p {
+      margin: 0;
+      color: #4c5a51;
+    }
+
+    .stamp {
+      margin-top: 34px;
+      width: 132px;
+      height: 132px;
+      border: 2px solid rgba(79, 125, 82, 0.45);
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      color: var(--green);
+      font-family: Georgia, serif;
+      font-weight: 700;
+      transform: rotate(-8deg);
+      opacity: 0.86;
+    }
+
+    section {
+      padding: 88px 0;
+      border-top: 1px solid var(--line);
+    }
+
+    .section-head {
+      display: grid;
+      grid-template-columns: 0.8fr 1.2fr;
+      gap: 48px;
+      margin-bottom: 38px;
+      align-items: start;
+    }
+
+    .kicker {
+      color: var(--brown);
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      font-size: 13px;
+      margin-bottom: 12px;
+    }
+
+    h2 {
+      margin: 0;
+      font-family: Georgia, "Noto Serif SC", "Songti SC", serif;
+      font-size: clamp(32px, 4vw, 52px);
+      line-height: 1.12;
+      letter-spacing: -0.03em;
+      color: var(--deep-green);
+    }
+
+    .section-intro {
+      margin: 0;
+      color: #4c5a51;
+      font-size: 18px;
+    }
+
+    .grid-3 {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 18px;
+    }
+
+    .card {
+      background: rgba(255, 250, 240, 0.72);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 26px;
+      box-shadow: 0 10px 30px rgba(47, 74, 53, 0.07);
+    }
+
+    .card .num {
+      color: var(--green);
+      font-weight: 800;
+      margin-bottom: 18px;
+      font-family: Georgia, serif;
+    }
+
+    .card h3 {
+      margin: 0 0 12px;
+      font-size: 22px;
+      color: var(--deep-green);
+    }
+
+    .card p {
+      margin: 0;
+      color: var(--muted);
+    }
+
+    .project {
+      display: grid;
+      grid-template-columns: 0.7fr 1.3fr;
+      gap: 28px;
+      padding: 28px;
+      background: rgba(255, 250, 240, 0.72);
+      border: 1px solid var(--line);
+      border-radius: 28px;
+      margin-bottom: 18px;
+      box-shadow: 0 10px 28px rgba(47, 74, 53, 0.06);
+    }
+
+    .project-label {
+      color: var(--green);
+      font-weight: 700;
+      font-size: 14px;
+    }
+
+    .project h3 {
+      margin: 8px 0 0;
+      font-size: 26px;
+      color: var(--deep-green);
+    }
+
+    .project p {
+      margin: 0 0 16px;
+      color: #4c5a51;
+    }
+
+    .tags {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .tag {
+      padding: 5px 10px;
+      border-radius: 999px;
+      background: rgba(79, 125, 82, 0.10);
+      color: var(--deep-green);
+      font-size: 13px;
+    }
+
+    .community {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 28px;
+      align-items: stretch;
+    }
+
+    .community-panel {
+      background: var(--deep-green);
+      color: white;
+      border-radius: 32px;
+      padding: 34px;
+      min-height: 420px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      box-shadow: var(--shadow);
+    }
+
+    .community-panel h2 {
+      color: white;
+    }
+
+    .community-panel p {
+      color: rgba(255, 255, 255, 0.78);
+      font-size: 17px;
+    }
+
+    .case-list {
+      display: grid;
+      gap: 14px;
+    }
+
+    .case {
+      background: rgba(255, 250, 240, 0.72);
+      border: 1px solid var(--line);
+      border-radius: 20px;
+      padding: 18px 20px;
+    }
+
+    .case strong {
+      display: block;
+      color: var(--deep-green);
+      margin-bottom: 4px;
+    }
+
+    .case span {
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .team {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+    }
+
+    .person {
+      background: rgba(255, 250, 240, 0.72);
+      border: 1px solid var(--line);
+      border-radius: 24px;
+      padding: 22px;
+    }
+
+    .avatar {
+      width: 54px;
+      height: 54px;
+      border-radius: 18px;
+      background:
+        linear-gradient(135deg, rgba(79, 125, 82, 0.28), rgba(154, 107, 69, 0.18));
+      border: 1px solid rgba(36, 49, 39, 0.10);
+      margin-bottom: 16px;
+    }
+
+    .person h3 {
+      margin: 0 0 6px;
+      color: var(--deep-green);
+    }
+
+    .person p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .contact-box {
+      background:
+        linear-gradient(135deg, rgba(47, 74, 53, 0.95), rgba(79, 125, 82, 0.90));
+      color: white;
+      border-radius: 36px;
+      padding: 44px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 34px;
+      box-shadow: var(--shadow);
+    }
+
+    .contact-box h2 {
+      color: white;
+    }
+
+    .contact-box p {
+      color: rgba(255, 255, 255, 0.8);
+      margin: 18px 0 0;
+    }
+
+    .contact-list {
+      display: grid;
+      gap: 14px;
+    }
+
+    .contact-item {
+      padding: 16px 18px;
+      border-radius: 18px;
+      background: rgba(255, 255, 255, 0.12);
+      border: 1px solid rgba(255, 255, 255, 0.18);
+    }
+
+    .contact-item small {
+      display: block;
+      color: rgba(255, 255, 255, 0.62);
+      margin-bottom: 4px;
+    }
+
+    footer {
+      padding: 34px 0 48px;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .footer-inner {
+      display: flex;
+      justify-content: space-between;
+      gap: 20px;
+      border-top: 1px solid var(--line);
+      padding-top: 24px;
+    }
+
+    @media (max-width: 860px) {
+      nav {
+        display: none;
+      }
+
+      .hero,
+      .section-head,
+      .community,
+      .contact-box {
+        grid-template-columns: 1fr;
+      }
+
+      .hero {
+        gap: 28px;
+        padding-top: 54px;
+      }
+
+      .grid-3,
+      .team {
+        grid-template-columns: 1fr;
+      }
+
+      .project {
+        grid-template-columns: 1fr;
+      }
+
+      section {
+        padding: 64px 0;
+      }
+
+      .contact-box {
+        padding: 30px;
+      }
+
+      .footer-inner {
+        flex-direction: column;
+      }
     }
   </style>
 </head>
+
 <body>
-  <div class="card">
-    <h1>ZHI Communitas</h1>
-    <p>This domain is active.</p>
-    <p>知域官网正在搭建中。</p>
-    <p class="small">zhicommunitas.com</p>
-  </div>
+  <header>
+    <div class="page nav">
+      <a class="brand" href="#top">
+        <span class="logo" aria-hidden="true"></span>
+        <span>ZHI Communitas 知域</span>
+      </a>
+
+      <nav>
+        <a href="#about">关于</a>
+        <a href="#projects">项目</a>
+        <a href="#community">知之岛</a>
+        <a href="#team">团队</a>
+        <a href="#contact">联系</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="top">
+    <section class="page hero">
+      <div>
+        <div class="eyebrow">Anthropology · Culture · Learning</div>
+        <h1>
+          ZHI Communitas
+          <span>知域</span>
+        </h1>
+
+        <p class="lead">
+          以人类学视角设计文化研学与跨文化教育项目。
+        </p>
+
+        <p class="lead-en">
+          We design anthropology-based cultural learning journeys connecting China, Europe, and local communities.
+        </p>
+
+        <div class="actions">
+          <a class="btn primary" href="#projects">了解项目</a>
+          <a class="btn secondary" href="#contact">联系我们</a>
+        </div>
+      </div>
+
+      <aside class="hero-card">
+        <div class="note">
+          <small>Field Notes / 田野笔记</small>
+          <h2>Learning begins with entering a place.</h2>
+          <p>
+            知域关注真实地方中的学习。我们将田野调查方法、地方文化知识与跨文化交流结合起来，
+            设计面向青年、家庭、学校与文化机构的研学项目和公共活动。
+          </p>
+
+          <div class="stamp">ZHI<br />2026</div>
+        </div>
+      </aside>
+    </section>
+
+    <section id="about" class="page">
+      <div class="section-head">
+        <div>
+          <div class="kicker">About</div>
+          <h2>在真实的地方关系中学习</h2>
+        </div>
+
+        <p class="section-intro">
+          知域从中国西南出发，也在欧洲城市中生长。通过访谈、观察、阅读、手工体验与社区参与，
+          我们希望帮助学习者进入具体的人、地方与关系，理解知识如何从真实经验中生成。
+        </p>
+      </div>
+
+      <div class="grid-3">
+        <article class="card">
+          <div class="num">01</div>
+          <h3>文化研学</h3>
+          <p>
+            围绕中国西南地方社会、民族文化与社区生活，设计面向青年学习者的深度研学项目。
+          </p>
+        </article>
+
+        <article class="card">
+          <div class="num">02</div>
+          <h3>田野训练</h3>
+          <p>
+            引导学生学习访谈、观察、记录、整理与表达，理解如何以人类学方式提出问题。
+          </p>
+        </article>
+
+        <article class="card">
+          <div class="num">03</div>
+          <h3>跨文化活动</h3>
+          <p>
+            在欧洲组织读书会、观鸟、文化体验与公共活动，连接青年社群与地方文化。
+          </p>
+        </article>
+      </div>
+    </section>
+
+    <section id="projects" class="page">
+      <div class="section-head">
+        <div>
+          <div class="kicker">Projects</div>
+          <h2>我们正在推进的项目</h2>
+        </div>
+
+        <p class="section-intro">
+          第一阶段项目集中在人类学研学、中国西南文化记录与欧洲青年文化社群。每个项目都从具体地方出发，
+          与在地伙伴共同设计，并留下可继续积累的记录。
+        </p>
+      </div>
+
+      <article class="project">
+        <div>
+          <div class="project-label">Featured Program</div>
+          <h3>云南人类学研学营</h3>
+        </div>
+
+        <div>
+          <p>
+            从丽江到泸沽湖，进入纳西、摩梭等地方文化语境。项目结合田野调查方法、地方文化学习与小组研究实践，
+            引导学生学习访谈、观察、记录与资料整理。
+          </p>
+
+          <div class="tags">
+            <span class="tag">丽江</span>
+            <span class="tag">泸沽湖</span>
+            <span class="tag">高中生研学</span>
+            <span class="tag">田野方法</span>
+          </div>
+        </div>
+      </article>
+
+      <article class="project">
+        <div>
+          <div class="project-label">Cultural Documentation</div>
+          <h3>摩梭文化记录项目</h3>
+        </div>
+
+        <div>
+          <p>
+            围绕口述史、影像记录与地方知识整理，知域与在地伙伴共同探索文化记录、公共传播与青年参与的可能性。
+          </p>
+
+          <div class="tags">
+            <span class="tag">口述史</span>
+            <span class="tag">影像记录</span>
+            <span class="tag">地方知识</span>
+            <span class="tag">公共传播</span>
+          </div>
+        </div>
+      </article>
+
+      <article class="project">
+        <div>
+          <div class="project-label">Cultural Exchange</div>
+          <h3>中欧文化教育合作</h3>
+        </div>
+
+        <div>
+          <p>
+            面向学校、旅行社、文化机构与社区组织，知域提供文化活动策划、教育项目设计与欧洲线下活动支持。
+          </p>
+
+          <div class="tags">
+            <span class="tag">学校合作</span>
+            <span class="tag">文化机构</span>
+            <span class="tag">社群活动</span>
+            <span class="tag">项目设计</span>
+          </div>
+        </div>
+      </article>
+    </section>
+
+    <section id="community" class="page">
+      <div class="community">
+        <div class="community-panel">
+          <div>
+            <div class="kicker" style="color: rgba(255,255,255,0.66);">Community Practice</div>
+            <h2>知之岛</h2>
+            <p>
+              知之岛是知域在欧洲的青年文化社群实践，目前在海德堡、曼海姆、法兰克福开展活动。
+              我们通过读书会、观鸟、城市漫游、文化体验与公共活动，探索年轻人在异乡如何重新连接知识、地方与彼此。
+            </p>
+          </div>
+
+          <div>
+            <a class="btn secondary" style="color:white;border-color:rgba(255,255,255,0.72);" href="#contact">
+              合作咨询
+            </a>
+          </div>
+        </div>
+
+        <div class="case-list">
+          <div class="case">
+            <strong>多语种阅读月</strong>
+            <span>在曼海姆、法兰克福、海德堡开展围绕语言与阅读的线下读书会。</span>
+          </div>
+
+          <div class="case">
+            <strong>法兰克福龙舟节云南文化摊位</strong>
+            <span>通过甲马拓印、东巴文体验与云南手工艺展示，进行公共文化推广。</span>
+          </div>
+
+          <div class="case">
+            <strong>海德堡观鸟活动</strong>
+            <span>以城市自然观察为入口，连接多物种兴趣、地方生活与青年社群。</span>
+          </div>
+
+          <div class="case">
+            <strong>新生欢迎会与城市活动</strong>
+            <span>为在德青年提供线下连接、生活经验交流与文化活动支持。</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="team" class="page">
+      <div class="section-head">
+        <div>
+          <div class="kicker">Team</div>
+          <h2>团队</h2>
+        </div>
+
+        <p class="section-intro">
+          知域团队具有人类学、哲学、教育与地方文化研究背景，连接欧洲高校、中国西南在地资源与青年社群实践。
+        </p>
+      </div>
+
+      <div class="team">
+        <article class="person">
+          <div class="avatar"></div>
+          <h3>朱彦钰</h3>
+          <p>
+            海德堡大学人类学硕士。关注多物种民族志、文化教育与青年社群实践，负责项目策划、课程设计与欧洲合作。
+          </p>
+        </article>
+
+        <article class="person">
+          <div class="avatar"></div>
+          <h3>漆高峰</h3>
+          <p>
+            柏林自由大学人类学博士在读。负责学术设计、田野方法训练与项目研究框架。
+          </p>
+        </article>
+
+        <article class="person">
+          <div class="avatar"></div>
+          <h3>王思然</h3>
+          <p>
+            海德堡大学哲学硕士。负责课程讨论、文本阅读与跨文化活动设计。
+          </p>
+        </article>
+
+        <article class="person">
+          <div class="avatar"></div>
+          <h3>大白</h3>
+          <p>
+            云南民族大学人类学博士。负责云南地方文化研究、在地资源连接与田野支持。
+          </p>
+        </article>
+      </div>
+    </section>
+
+    <section id="contact" class="page">
+      <div class="contact-box">
+        <div>
+          <div class="kicker" style="color: rgba(255,255,255,0.66);">Contact</div>
+          <h2>欢迎联系我们</h2>
+          <p>
+            如果你对学校合作、研学项目咨询、文化活动共创、中国西南文化项目或欧洲线下活动支持感兴趣，
+            欢迎与知域联系。
+          </p>
+        </div>
+
+        <div class="contact-list">
+          <div class="contact-item">
+            <small>Email</small>
+            <strong>hello@zhicommunitas.com</strong>
+          </div>
+
+          <div class="contact-item">
+            <small>Website</small>
+            <strong>zhicommunitas.com</strong>
+          </div>
+
+          <div class="contact-item">
+            <small>Social Media</small>
+            <strong>Instagram / 小红书 / 微信公众号：ZHI Communitas 知域</strong>
+          </div>
+
+          <div class="contact-item">
+            <small>Based in</small>
+            <strong>Heidelberg · Frankfurt · Yunnan</strong>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="page">
+    <div class="footer-inner">
+      <div>© 2026 ZHI Communitas 知域</div>
+      <div>Anthropology-based cultural learning journeys.</div>
+    </div>
+  </footer>
 </body>
 </html>
