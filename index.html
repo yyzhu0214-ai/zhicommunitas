@@ -1,862 +1,751 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>ZHI Communitas 知域</title>
-
-  <style>
-    :root {
-      --bg: #f5f1e8;
-      --paper: #fffaf0;
-      --paper-2: #efe8dc;
-      --text: #243127;
-      --muted: #68746b;
-      --green: #4f7d52;
-      --deep-green: #2f4a35;
-      --brown: #9a6b45;
-      --line: rgba(36, 49, 39, 0.16);
-      --shadow: 0 18px 48px rgba(47, 74, 53, 0.12);
-      --radius: 24px;
-    }
-
-    * {
-      box-sizing: border-box;
-    }
-
-    html {
-      scroll-behavior: smooth;
-    }
-
-    body {
-      margin: 0;
-      background:
-        radial-gradient(circle at top left, rgba(79, 125, 82, 0.12), transparent 32%),
-        radial-gradient(circle at 80% 10%, rgba(154, 107, 69, 0.10), transparent 28%),
-        var(--bg);
-      color: var(--text);
-      font-family: -apple-system, BlinkMacSystemFont, "Noto Sans SC", "PingFang SC", "Helvetica Neue", Arial, sans-serif;
-      line-height: 1.7;
-    }
-
-    a {
-      color: inherit;
-      text-decoration: none;
-    }
-
-    .page {
-      width: min(1120px, calc(100% - 40px));
-      margin: 0 auto;
-    }
-
-    header {
-      position: sticky;
-      top: 0;
-      z-index: 10;
-      backdrop-filter: blur(18px);
-      background: rgba(245, 241, 232, 0.82);
-      border-bottom: 1px solid var(--line);
-    }
-
-    .nav {
-      height: 72px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-    }
-
-    .brand {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      font-weight: 700;
-      letter-spacing: 0.02em;
-    }
-
-    .logo {
-      width: 34px;
-      height: 34px;
-      border-radius: 50%;
-      background:
-        linear-gradient(135deg, rgba(79, 125, 82, 0.95), rgba(47, 74, 53, 0.95));
-      position: relative;
-      box-shadow: 0 6px 18px rgba(47, 74, 53, 0.25);
-    }
-
-    .logo::after {
-      content: "";
-      position: absolute;
-      width: 12px;
-      height: 12px;
-      border-radius: 50%;
-      background: var(--bg);
-      top: 8px;
-      left: 10px;
-      opacity: 0.9;
-    }
-
-    nav {
-      display: flex;
-      gap: 24px;
-      font-size: 14px;
-      color: var(--muted);
-    }
-
-    nav a:hover {
-      color: var(--deep-green);
-    }
-
-    .hero {
-      min-height: calc(100vh - 72px);
-      display: grid;
-      grid-template-columns: 1.1fr 0.9fr;
-      gap: 56px;
-      align-items: center;
-      padding: 72px 0 88px;
-    }
-
-    .eyebrow {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      padding: 7px 12px;
-      border: 1px solid var(--line);
-      border-radius: 999px;
-      color: var(--green);
-      background: rgba(255, 250, 240, 0.6);
-      font-size: 13px;
-      margin-bottom: 24px;
-    }
-
-    .eyebrow::before {
-      content: "";
-      width: 7px;
-      height: 7px;
-      border-radius: 50%;
-      background: var(--green);
-    }
-
-    h1 {
-      margin: 0;
-      font-family: Georgia, "Noto Serif SC", "Songti SC", serif;
-      font-size: clamp(46px, 8vw, 92px);
-      line-height: 0.96;
-      letter-spacing: -0.05em;
-      color: var(--deep-green);
-    }
-
-    .hero h1 span {
-      display: block;
-      font-size: clamp(34px, 5vw, 62px);
-      margin-top: 14px;
-      color: var(--text);
-      letter-spacing: -0.03em;
-    }
-
-    .lead {
-      margin: 28px 0 0;
-      max-width: 620px;
-      font-size: 20px;
-      color: #3e4b42;
-    }
-
-    .lead-en {
-      margin: 16px 0 0;
-      max-width: 620px;
-      color: var(--muted);
-      font-size: 16px;
-    }
-
-    .actions {
-      margin-top: 36px;
-      display: flex;
-      gap: 14px;
-      flex-wrap: wrap;
-    }
-
-    .btn {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      padding: 13px 20px;
-      border-radius: 999px;
-      border: 1px solid var(--deep-green);
-      font-weight: 600;
-      font-size: 15px;
-      transition: 0.2s ease;
-    }
-
-    .btn.primary {
-      background: var(--deep-green);
-      color: white;
-    }
-
-    .btn.secondary {
-      background: rgba(255, 250, 240, 0.5);
-      color: var(--deep-green);
-    }
-
-    .btn:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 10px 24px rgba(47, 74, 53, 0.15);
-    }
-
-    .hero-card {
-      background: rgba(255, 250, 240, 0.72);
-      border: 1px solid var(--line);
-      border-radius: 32px;
-      padding: 28px;
-      box-shadow: var(--shadow);
-      position: relative;
-      overflow: hidden;
-    }
-
-    .hero-card::before {
-      content: "";
-      position: absolute;
-      inset: 14px;
-      border: 1px solid rgba(36, 49, 39, 0.10);
-      border-radius: 24px;
-      pointer-events: none;
-    }
-
-    .note {
-      position: relative;
-      padding: 32px 28px;
-      background: var(--paper);
-      border-radius: 24px;
-      border: 1px solid rgba(36, 49, 39, 0.12);
-      min-height: 360px;
-    }
-
-    .note small {
-      color: var(--brown);
-      text-transform: uppercase;
-      letter-spacing: 0.12em;
-      font-weight: 700;
-      font-size: 12px;
-    }
-
-    .note h2 {
-      margin: 24px 0 16px;
-      font-family: Georgia, "Noto Serif SC", serif;
-      font-size: 34px;
-      line-height: 1.2;
-      color: var(--deep-green);
-    }
-
-    .note p {
-      margin: 0;
-      color: #4c5a51;
-    }
-
-    .stamp {
-      margin-top: 34px;
-      width: 132px;
-      height: 132px;
-      border: 2px solid rgba(79, 125, 82, 0.45);
-      border-radius: 50%;
-      display: grid;
-      place-items: center;
-      color: var(--green);
-      font-family: Georgia, serif;
-      font-weight: 700;
-      transform: rotate(-8deg);
-      opacity: 0.86;
-    }
-
-    section {
-      padding: 88px 0;
-      border-top: 1px solid var(--line);
-    }
-
-    .section-head {
-      display: grid;
-      grid-template-columns: 0.8fr 1.2fr;
-      gap: 48px;
-      margin-bottom: 38px;
-      align-items: start;
-    }
-
-    .kicker {
-      color: var(--brown);
-      font-weight: 700;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      font-size: 13px;
-      margin-bottom: 12px;
-    }
-
-    h2 {
-      margin: 0;
-      font-family: Georgia, "Noto Serif SC", "Songti SC", serif;
-      font-size: clamp(32px, 4vw, 52px);
-      line-height: 1.12;
-      letter-spacing: -0.03em;
-      color: var(--deep-green);
-    }
-
-    .section-intro {
-      margin: 0;
-      color: #4c5a51;
-      font-size: 18px;
-    }
-
-    .grid-3 {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 18px;
-    }
-
-    .card {
-      background: rgba(255, 250, 240, 0.72);
-      border: 1px solid var(--line);
-      border-radius: var(--radius);
-      padding: 26px;
-      box-shadow: 0 10px 30px rgba(47, 74, 53, 0.07);
-    }
-
-    .card .num {
-      color: var(--green);
-      font-weight: 800;
-      margin-bottom: 18px;
-      font-family: Georgia, serif;
-    }
-
-    .card h3 {
-      margin: 0 0 12px;
-      font-size: 22px;
-      color: var(--deep-green);
-    }
-
-    .card p {
-      margin: 0;
-      color: var(--muted);
-    }
-
-    .project {
-      display: grid;
-      grid-template-columns: 0.7fr 1.3fr;
-      gap: 28px;
-      padding: 28px;
-      background: rgba(255, 250, 240, 0.72);
-      border: 1px solid var(--line);
-      border-radius: 28px;
-      margin-bottom: 18px;
-      box-shadow: 0 10px 28px rgba(47, 74, 53, 0.06);
-    }
-
-    .project-label {
-      color: var(--green);
-      font-weight: 700;
-      font-size: 14px;
-    }
-
-    .project h3 {
-      margin: 8px 0 0;
-      font-size: 26px;
-      color: var(--deep-green);
-    }
-
-    .project p {
-      margin: 0 0 16px;
-      color: #4c5a51;
-    }
-
-    .tags {
-      display: flex;
-      gap: 8px;
-      flex-wrap: wrap;
-    }
-
-    .tag {
-      padding: 5px 10px;
-      border-radius: 999px;
-      background: rgba(79, 125, 82, 0.10);
-      color: var(--deep-green);
-      font-size: 13px;
-    }
-
-    .community {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 28px;
-      align-items: stretch;
-    }
-
-    .community-panel {
-      background: var(--deep-green);
-      color: white;
-      border-radius: 32px;
-      padding: 34px;
-      min-height: 420px;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      box-shadow: var(--shadow);
-    }
-
-    .community-panel h2 {
-      color: white;
-    }
-
-    .community-panel p {
-      color: rgba(255, 255, 255, 0.78);
-      font-size: 17px;
-    }
-
-    .case-list {
-      display: grid;
-      gap: 14px;
-    }
-
-    .case {
-      background: rgba(255, 250, 240, 0.72);
-      border: 1px solid var(--line);
-      border-radius: 20px;
-      padding: 18px 20px;
-    }
-
-    .case strong {
-      display: block;
-      color: var(--deep-green);
-      margin-bottom: 4px;
-    }
-
-    .case span {
-      color: var(--muted);
-      font-size: 14px;
-    }
-
-    .team {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 16px;
-    }
-
-    .person {
-      background: rgba(255, 250, 240, 0.72);
-      border: 1px solid var(--line);
-      border-radius: 24px;
-      padding: 22px;
-    }
-
-    .avatar {
-      width: 54px;
-      height: 54px;
-      border-radius: 18px;
-      background:
-        linear-gradient(135deg, rgba(79, 125, 82, 0.28), rgba(154, 107, 69, 0.18));
-      border: 1px solid rgba(36, 49, 39, 0.10);
-      margin-bottom: 16px;
-    }
-
-    .person h3 {
-      margin: 0 0 6px;
-      color: var(--deep-green);
-    }
-
-    .person p {
-      margin: 0;
-      color: var(--muted);
-      font-size: 14px;
-    }
-
-    .contact-box {
-      background:
-        linear-gradient(135deg, rgba(47, 74, 53, 0.95), rgba(79, 125, 82, 0.90));
-      color: white;
-      border-radius: 36px;
-      padding: 44px;
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 34px;
-      box-shadow: var(--shadow);
-    }
-
-    .contact-box h2 {
-      color: white;
-    }
-
-    .contact-box p {
-      color: rgba(255, 255, 255, 0.8);
-      margin: 18px 0 0;
-    }
-
-    .contact-list {
-      display: grid;
-      gap: 14px;
-    }
-
-    .contact-item {
-      padding: 16px 18px;
-      border-radius: 18px;
-      background: rgba(255, 255, 255, 0.12);
-      border: 1px solid rgba(255, 255, 255, 0.18);
-    }
-
-    .contact-item small {
-      display: block;
-      color: rgba(255, 255, 255, 0.62);
-      margin-bottom: 4px;
-    }
-
-    footer {
-      padding: 34px 0 48px;
-      color: var(--muted);
-      font-size: 14px;
-    }
-
-    .footer-inner {
-      display: flex;
-      justify-content: space-between;
-      gap: 20px;
-      border-top: 1px solid var(--line);
-      padding-top: 24px;
-    }
-
-    @media (max-width: 860px) {
-      nav {
-        display: none;
-      }
-
-      .hero,
-      .section-head,
-      .community,
-      .contact-box {
-        grid-template-columns: 1fr;
-      }
-
-      .hero {
-        gap: 28px;
-        padding-top: 54px;
-      }
-
-      .grid-3,
-      .team {
-        grid-template-columns: 1fr;
-      }
-
-      .project {
-        grid-template-columns: 1fr;
-      }
-
-      section {
-        padding: 64px 0;
-      }
-
-      .contact-box {
-        padding: 30px;
-      }
-
-      .footer-inner {
-        flex-direction: column;
-      }
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>知域 ZHI Communitas</title>
+<meta name="description" content="知域 ZHI Communitas：以人类学视角呈现云南的地方知识、社区记忆与传统技艺。Anthropology-based cultural learning connecting China and Europe.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600&family=Noto+Sans+SC:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  /* ========== 调色盘：改这里，全站一起变 ========== */
+  :root {
+    --black: #000000;
+    --blue: #3A5675;     /* 品牌蓝 */
+    --gray: #D9D9D9;     /* 浅灰 */
+    --white: #FFFFFF;
+    --beige: #F3EEE6;    /* 下拉菜单米色底板（待设计师确认） */
+    --ink: #1c1c1c;      /* 正文深色 */
+    --muted: #6b6b6b;
+    --serif: "Noto Serif SC", "Songti SC", serif;
+    --sans: "Noto Sans SC", "PingFang SC", -apple-system, sans-serif;
+    --header-h: 76px;
+    --gutter: clamp(24px, 5vw, 72px);
+  }
+
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body { margin: 0; background: var(--white); color: var(--ink); font-family: var(--sans); font-weight: 400; line-height: 1.7; }
+  a { color: inherit; text-decoration: none; }
+  button { font: inherit; color: inherit; background: none; border: 0; cursor: pointer; }
+
+  /* ========== G-01 顶部导航 ========== */
+  header {
+    position: fixed; inset: 0 0 auto 0; z-index: 50;
+    height: var(--header-h);
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 var(--gutter);
+    color: var(--white);
+    transition: background .35s, color .35s, box-shadow .35s;
+  }
+  header::before { /* 首屏时顶部的淡淡暗色，保证白字可读 */
+    content: ""; position: absolute; inset: 0 0 -40px 0; z-index: -1;
+    background: linear-gradient(rgba(0,0,0,.45), transparent);
+    transition: opacity .35s;
+  }
+  header.solid { background: var(--white); color: var(--black); box-shadow: 0 1px 0 rgba(0,0,0,.08); }
+  header.solid::before { opacity: 0; }
+  header.menu-open { background: var(--beige); color: var(--black); box-shadow: none; }
+  header.menu-open::before { opacity: 0; }
+
+  .brand { display: flex; align-items: baseline; gap: 10px; }
+  .brand .zh { font-family: var(--serif); font-size: 24px; font-weight: 600; letter-spacing: .08em; }
+  .brand .en { font-size: 12px; letter-spacing: .22em; text-transform: uppercase; opacity: .85; }
+
+  .nav-right { display: flex; align-items: center; gap: 36px; height: 100%; }
+  nav.main { display: flex; gap: 32px; height: 100%; }
+  .nav-item { display: flex; align-items: center; height: 100%; }
+  .nav-item > a {
+    font-size: 14px; letter-spacing: .06em; position: relative; padding: 6px 0;
+  }
+  .nav-item > a::after {
+    content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 1px;
+    background: currentColor; transform: scaleX(0); transition: transform .3s;
+  }
+  .nav-item:hover > a::after, .nav-item.open > a::after { transform: scaleX(1); }
+  .tools { display: flex; align-items: center; gap: 20px; font-size: 13px; letter-spacing: .08em; }
+  .tools .lang { display: flex; align-items: center; gap: 6px; }
+  .tools .lang button { padding: 4px 2px; opacity: .5; letter-spacing: .08em; transition: opacity .2s; }
+  .tools .lang button:hover { opacity: .85; }
+  .tools .lang button.active { opacity: 1; font-weight: 500; }
+  .tools .lang .sep { opacity: .4; }
+  .icon { width: 18px; height: 18px; display: block; }
+
+  /* ========== G-02 多栏展开菜单 ========== */
+  .mega {
+    position: fixed; left: 0; right: 0; top: var(--header-h);
+    background: var(--beige); color: var(--ink);
+    padding: 40px var(--gutter) 48px;
+    display: grid; grid-template-columns: repeat(4, minmax(0, 220px)) 1fr; gap: 48px;
+    opacity: 0; visibility: hidden; transform: translateY(-8px);
+    transition: opacity .25s, transform .25s, visibility .25s;
+    border-top: 1px solid rgba(0,0,0,.06);
+  }
+  .nav-item.open .mega { opacity: 1; visibility: visible; transform: none; }
+  .mega h4 { margin: 0 0 14px; font-size: 13px; font-weight: 500; letter-spacing: .1em; color: var(--blue); }
+  .mega ul { list-style: none; margin: 0; padding: 0; }
+  .mega li a { display: block; padding: 4px 0; font-size: 14px; color: var(--muted); font-weight: 300; }
+  .mega li a:hover { color: var(--black); }
+  .mega .mega-note { align-self: end; justify-self: end; font-family: var(--serif); font-size: 15px; color: var(--muted); max-width: 280px; }
+
+  /* ========== H-01 首屏轮播 ========== */
+  .hero { position: relative; height: 100vh; min-height: 620px; overflow: hidden; background: #111; color: var(--white); }
+  .slide { position: absolute; inset: 0; opacity: 0; transition: opacity 1.4s ease; }
+  .slide.active { opacity: 1; }
+  .slide img { width: 100%; height: 100%; object-fit: cover; transform: scale(1.06); transition: transform 8s ease-out; }
+  .slide.active img { transform: scale(1); }
+  .hero::after { /* 左下角暗色遮罩，保证文字可读 */
+    content: ""; position: absolute; inset: 0; pointer-events: none;
+    background:
+      linear-gradient(to top, rgba(0,0,0,.55), transparent 55%),
+      linear-gradient(to right, rgba(0,0,0,.35), transparent 60%);
+  }
+  .hero-text { position: absolute; z-index: 2; left: var(--gutter); bottom: 120px; max-width: 640px; }
+  .eyebrow { font-size: 12px; letter-spacing: .3em; text-transform: uppercase; opacity: .9; margin-bottom: 20px; }
+  .hero h1 { margin: 0; font-family: var(--serif); font-weight: 400; font-size: clamp(32px, 3.6vw, 52px); line-height: 1.2; letter-spacing: .1em; }
+  .hero p.sub { margin: 22px 0 36px; font-size: 16px; font-weight: 300; letter-spacing: .06em; opacity: .9; }
+
+  /* 英文字母不需要中文那么宽的字间距 */
+  html[lang="en"] .hero h1, html[lang="en"] .theme h2, html[lang="en"] .about h2 { letter-spacing: .02em; }
+
+  .btn {
+    display: inline-flex; align-items: center; gap: 12px;
+    padding: 14px 30px; border: 1px solid currentColor;
+    font-size: 14px; letter-spacing: .12em;
+    transition: background .3s, color .3s, border-color .3s;
+  }
+  .btn .arrow { transition: transform .3s; }
+  .btn:hover .arrow { transform: translateX(4px); }
+  .btn.light:hover { background: var(--white); color: var(--black); border-color: var(--white); }
+  .btn.dark { color: var(--blue); }
+  .btn.dark:hover { background: var(--blue); color: var(--white); border-color: var(--blue); }
+
+  .caption { position: absolute; z-index: 2; left: var(--gutter); bottom: 40px; font-size: 13px; letter-spacing: .14em; opacity: .85; }
+
+  /* 底部居中的小圆点 */
+  .dots { position: absolute; z-index: 2; left: 50%; bottom: 34px; transform: translateX(-50%); display: flex; gap: 4px; }
+  .dot { width: 22px; height: 22px; display: grid; place-items: center; }   /* 外圈是点击区域，比圆点大，好点 */
+  .dot::before {
+    content: ""; width: 7px; height: 7px; border-radius: 50%;   /* ← 圆点大小改这里 */
+    background: rgba(255,255,255,.45); transition: background .3s, transform .3s;
+  }
+  .dot:hover::before { background: rgba(255,255,255,.8); }
+  .dot.active::before { background: var(--white); transform: scale(1.2); }
+  .arrow-btn { width: 40px; height: 40px; border: 1px solid rgba(255,255,255,.5); border-radius: 50%; display: grid; place-items: center; transition: background .3s, color .3s; }
+  .arrow-btn:hover { background: var(--white); color: var(--black); }
+
+  /* ========== H-02~05 主题影像区 ========== */
+  .theme { position: relative; height: 88vh; min-height: 560px; display: grid; place-items: center; text-align: center; color: var(--white); overflow: hidden; }
+  .theme .bg { position: absolute; inset: 0; }
+  .theme::after { content: ""; position: absolute; inset: 0; background: rgba(0,0,0,.28); }
+  .theme .bg img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .theme-inner { text-shadow: 0 1px 14px rgba(0,0,0,.45); }   /* 文字淡阴影，照片再花也看得清 */
+  /* 画面比较“花”的照片：中间压暗一些，保证文字清楚 */
+  .theme.busy::after { background: radial-gradient(ellipse 55% 60% at center, rgba(0,0,0,.62), rgba(0,0,0,.3)); }
+  .theme-inner { position: relative; z-index: 1; max-width: 640px; padding: 0 24px; }
+  .theme .kicker { font-size: 12px; letter-spacing: .3em; text-transform: uppercase; opacity: .85; }
+  .theme h2 { margin: 14px 0 22px; font-family: var(--serif); font-weight: 400; font-size: clamp(40px, 5vw, 64px); letter-spacing: .1em; }
+  .theme p { margin: 0 0 36px; font-size: 15px; font-weight: 300; line-height: 2; opacity: .92; }
+
+  /* 占位图：以后换成真照片 */
+  .ph {
+    background: linear-gradient(135deg, #4a6582, #22344a);
+    display: grid; place-items: center;
+  }
+  .ph-label {
+    position: absolute; top: 20px; right: 20px; z-index: 2;
+    font-size: 11px; letter-spacing: .12em; padding: 4px 10px;
+    border: 1px dashed rgba(255,255,255,.6); color: rgba(255,255,255,.85);
+  }
+
+  /* ========== H-02B~05B 横向卡片 ========== */
+  .rail-section { padding: 72px 0 96px; }
+  .rail-head { display: flex; align-items: end; justify-content: space-between; padding: 0 var(--gutter); margin-bottom: 28px; }
+  .rail-head h3 { margin: 0; font-family: var(--serif); font-weight: 400; font-size: 22px; letter-spacing: .08em; }
+  .rail-head .rail-arrows { display: flex; gap: 10px; }
+  .rail-head .arrow-btn { border-color: rgba(0,0,0,.25); color: var(--black); }
+  .rail-head .arrow-btn:hover { background: var(--black); color: var(--white); }
+  .rail-head .arrow-btn:disabled { opacity: .25; pointer-events: none; }
+
+  .rail {
+    display: flex; gap: 20px; overflow-x: auto; scroll-snap-type: x mandatory;
+    padding: 0 var(--gutter); scroll-padding: 0 var(--gutter);
+    scrollbar-width: none; cursor: grab;
+  }
+  .rail::-webkit-scrollbar { display: none; }
+  .rail.dragging { cursor: grabbing; scroll-snap-type: none; }
+  .rail.dragging * { pointer-events: none; }
+  .card { flex: 0 0 clamp(220px, 22vw, 300px); scroll-snap-align: start; user-select: none; }
+  .card.wide { flex-basis: clamp(320px, 34vw, 460px); }
+  .card-img { position: relative; aspect-ratio: 3 / 4; overflow: hidden; }
+  .card.wide .card-img { aspect-ratio: 4 / 3; }
+  .card-img .ph { position: absolute; inset: 0; transition: opacity .5s, transform .8s; }
+  .card:hover .card-img .ph.main { transform: scale(1.03); }
+  .card-img > img.main { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; transition: transform .8s; }
+  .card:hover .card-img > img.main { transform: scale(1.03); }
+  .card-img .ph span { font-size: 12px; letter-spacing: .1em; color: rgba(255,255,255,.7); }
+
+  /* Shop：悬停换细节图 */
+  .card-img .ph.detail { opacity: 0; background: linear-gradient(135deg, #8b6f55, #4d3b2c); }
+  .shop .card:hover .ph.detail { opacity: 1; }
+  .origin { position: absolute; left: 16px; bottom: 14px; z-index: 2; color: var(--white); font-family: var(--serif); font-size: 13px; letter-spacing: .14em; }
+  .card-title { margin-top: 14px; font-size: 15px; letter-spacing: .04em; }
+
+  /* Stories：地点 + 标题叠在图上 */
+  .story-text { position: absolute; inset: 0; z-index: 2; display: grid; place-content: center; text-align: center; color: var(--white); padding: 24px; background: rgba(0,0,0,.22); text-shadow: 0 1px 12px rgba(0,0,0,.5); }
+  .story-text .place { font-family: var(--serif); font-size: 30px; letter-spacing: .12em; }
+  .story-text .name { margin-top: 8px; font-size: 14px; letter-spacing: .06em; opacity: .92; }
+
+  /* Journeys：右上天数，左下信息 */
+  .days { position: absolute; top: 16px; right: 16px; z-index: 2; color: var(--white); font-size: 13px; letter-spacing: .1em; border: 1px solid rgba(255,255,255,.7); padding: 2px 10px; }
+  .journey-text { position: absolute; left: 0; right: 0; bottom: 0; z-index: 2; padding: 60px 20px 20px; color: var(--white); background: linear-gradient(transparent, rgba(0,0,0,.6)); }
+  .journey-text .place { font-size: 12px; letter-spacing: .2em; opacity: .85; }
+  .journey-text .name { font-family: var(--serif); font-size: 20px; margin: 4px 0 12px; letter-spacing: .06em; }
+  .journey-text .go { font-size: 13px; letter-spacing: .1em; border-bottom: 1px solid rgba(255,255,255,.6); padding-bottom: 2px; }
+
+  /* Projects：横向卡片，左侧信息 */
+  .event { display: grid; grid-template-columns: 1fr 1fr; aspect-ratio: 4 / 3; background: #f6f6f6; }
+  .event .info { padding: 24px; display: flex; flex-direction: column; gap: 6px; font-size: 13px; color: var(--muted); }
+  .event .info .place { font-size: 12px; letter-spacing: .2em; color: var(--blue); }
+  .event .info .name { font-family: var(--serif); font-size: 19px; color: var(--ink); margin: 2px 0 10px; line-height: 1.4; }
+  .event .info .row { display: flex; gap: 8px; align-items: center; }
+  .event .info .row svg { width: 14px; height: 14px; flex: none; }
+  .event .info .more { margin-top: auto; color: var(--ink); font-size: 13px; letter-spacing: .1em; }
+  .event .pic { position: relative; }
+
+  /* “查看更多”卡片 */
+  .card.more .card-img, .card.more .event { background: #f2f2f2; display: grid; place-items: center; }
+  .card.more .event { grid-template-columns: 1fr; }
+  .more-inner { text-align: center; color: var(--blue); }
+  .more-inner .circle { width: 56px; height: 56px; margin: 0 auto 14px; border: 1px solid currentColor; border-radius: 50%; display: grid; place-items: center; transition: background .3s, color .3s; }
+  .card.more:hover .circle { background: var(--blue); color: var(--white); }
+  .more-inner div:last-child { font-size: 14px; letter-spacing: .14em; }
+
+  /* ========== 活动详情弹窗 ========== */
+  .modal { position: fixed; inset: 0; z-index: 100; display: grid; place-items: center; padding: 24px; }
+  .modal[hidden] { display: none; }
+  .modal-backdrop { position: absolute; inset: 0; background: rgba(0,0,0,.62); }
+  .modal-panel {
+    position: relative; width: min(1100px, 100%); max-height: calc(100vh - 48px); overflow-y: auto;
+    background: var(--white); color: var(--ink); padding: 56px 56px 48px;
+  }
+  .modal-close { position: absolute; top: 14px; right: 18px; width: 40px; height: 40px; font-size: 26px; line-height: 1; color: var(--muted); }
+  .modal-close:hover { color: var(--black); }
+  body.no-scroll { overflow: hidden; }
+
+  .ev-grid { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 6fr); gap: 56px; align-items: start; }
+  .ev-poster-main { width: 100%; aspect-ratio: 3 / 4; object-fit: cover; display: block; background: #eee; }
+  .ev-thumbs { display: flex; gap: 10px; margin-top: 12px; }
+  .ev-thumbs button { display: flex; align-items: center; gap: 8px; padding: 4px 12px 4px 4px; border: 1px solid var(--gray); font-size: 12px; letter-spacing: .08em; color: var(--muted); }
+  .ev-thumbs button img { width: 36px; height: 48px; object-fit: cover; display: block; }
+  .ev-thumbs button.active { border-color: var(--blue); color: var(--blue); }
+
+  .ev-kicker { font-size: 12px; letter-spacing: .2em; text-transform: uppercase; color: var(--blue); }
+  .ev-info h2 { margin: 10px 0 24px; font-family: var(--serif); font-weight: 400; font-size: 30px; line-height: 1.35; letter-spacing: .02em; text-wrap: balance; }
+  .ev-info blockquote { margin: 0 0 20px; padding-left: 16px; border-left: 2px solid var(--blue); font-family: var(--serif); font-size: 17px; line-height: 1.8; }
+  .ev-info p { margin: 0 0 14px; font-size: 15px; line-height: 1.9; font-weight: 300; }
+  .ev-facts { margin: 28px 0 0; padding: 22px 0; border-top: 1px solid var(--gray); border-bottom: 1px solid var(--gray); display: grid; grid-template-columns: auto 1fr; gap: 10px 20px; font-size: 14px; }
+  .ev-facts dt { color: var(--muted); font-size: 12px; letter-spacing: .1em; padding-top: 2px; }
+  .ev-facts dd { margin: 0; }
+  .ev-film { margin-top: 20px; font-size: 13px; line-height: 1.9; color: var(--muted); }
+  .ev-film strong { color: var(--ink); font-weight: 500; }
+  .ev-host { margin-top: 16px; font-size: 13px; letter-spacing: .06em; color: var(--blue); }
+  .ev-stills { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; margin-top: 48px; }
+  .ev-stills img { width: 100%; aspect-ratio: 2 / 3; object-fit: cover; display: block; }
+  @media (max-width: 800px) {
+    .modal { padding: 0; }
+    .modal-panel { max-height: 100vh; height: 100%; padding: 56px 20px 32px; }
+    .ev-grid { grid-template-columns: 1fr; gap: 32px; }
+  }
+
+  /* ========== H-06 关于我们 ========== */
+  .about { background: var(--gray); padding: 120px var(--gutter); text-align: center; }
+  .about h2 { margin: 0 0 28px; font-family: var(--serif); font-weight: 400; font-size: clamp(32px, 4vw, 48px); color: var(--blue); letter-spacing: .1em; }
+  .about p { max-width: 640px; margin: 0 auto 40px; font-size: 16px; line-height: 2.1; font-weight: 300; }
+  .about .logo-mark { margin-top: 64px; font-family: var(--serif); font-size: 20px; letter-spacing: .3em; color: var(--blue); }
+
+  footer { background: var(--black); color: rgba(255,255,255,.6); padding: 36px var(--gutter); font-size: 12px; letter-spacing: .1em; display: flex; justify-content: space-between; }
+
+  @media (prefers-reduced-motion: reduce) {
+    .slide img, .slide.active img { transform: none; transition: none; }
+    .slide { transition-duration: .3s; }
+  }
+
+  /* ===== 小屏幕基本适配（正式手机版之后再设计） ===== */
+  html, body { overflow-x: clip; }
+  header { padding-top: env(safe-area-inset-top, 0px); height: calc(var(--header-h) + env(safe-area-inset-top, 0px)); padding-left: max(var(--gutter), env(safe-area-inset-left, 0px)); padding-right: max(var(--gutter), env(safe-area-inset-right, 0px)); }
+  @media (max-width: 900px) {
+    nav.main { display: none; }
+    .hero-text { bottom: 96px; right: var(--gutter); }
+    .theme p { font-size: 14px; }
+    .event { grid-template-columns: 1fr; aspect-ratio: auto; }
+    .event .pic { aspect-ratio: 4 / 3; order: -1; }
+    footer { flex-direction: column; gap: 6px; }
+  }
+</style>
 </head>
-
 <body>
-  <header>
-    <div class="page nav">
-      <a class="brand" href="#top">
-        <span class="logo" aria-hidden="true"></span>
-        <span>ZHI Communitas 知域</span>
-      </a>
 
-      <nav>
-        <a href="#about">关于</a>
-        <a href="#projects">项目</a>
-        <a href="#community">知之岛</a>
-        <a href="#team">团队</a>
-        <a href="#contact">联系</a>
-      </nav>
+<!-- ====================== G-01 顶部导航 ====================== -->
+<header id="header">
+  <a class="brand" href="#top">
+    <span class="zh">知域</span><span class="en">ZHI Communitas</span>
+  </a>
+
+  <div class="nav-right">
+    <nav class="main" id="mainNav">
+      <div class="nav-item">
+        <a href="#shop">Shop</a>
+        <div class="mega">
+          <div><h4 data-en="Kudzu Textiles">葛根织物</h4><ul><li><a href="#shop" data-en="Backpacks">背包</a></li><li><a href="#shop" data-en="Wine Bags">红酒包</a></li><li><a href="#shop" data-en="Coasters">杯垫</a></li></ul></div>
+          <div><h4 data-en="Mosuo Handweaving">摩梭手工纺织</h4><ul><li><a href="#shop" data-en="Scarves">围巾</a></li><li><a href="#shop" data-en="Tablecloths">桌布</a></li><li><a href="#shop" data-en="Backpacks">背包</a></li><li><a href="#shop" data-en="Phone Pouches">手机包</a></li><li><a href="#shop" data-en="Earrings">耳环</a></li><li><a href="#shop" data-en="Phone Straps">手机链</a></li></ul></div>
+          <div><h4 data-en="Ethnic Jewelry">民族饰品</h4><ul><li><a href="#shop" data-en="All Jewelry">全部饰品</a></li></ul></div>
+          <div></div>
+          <p class="mega-note" data-en="A thread, a piece of cloth, a pair of hands<br>give a people's memory a form you can touch.">一根线、一块布、一双手，<br>让民族的记忆有了可以触摸的模样。</p>
+        </div>
+      </div>
+      <div class="nav-item">
+        <a href="#stories">Stories</a>
+        <div class="mega">
+          <div><h4>Stories</h4><ul><li><a href="#stories" data-en="Travel Journals">旅行记录册</a></li></ul></div>
+        </div>
+      </div>
+      <div class="nav-item">
+        <a href="#journeys">Journeys</a>
+        <div class="mega">
+          <div><h4>Journeys</h4><ul><li><a href="#journeys" data-en="Travel Calendar">旅行日历</a></li></ul></div>
+        </div>
+      </div>
+      <div class="nav-item">
+        <a href="#projects">Projects</a>
+        <div class="mega">
+          <div><h4>Projects</h4><ul><li><a href="#projects" data-en="(Coming soon)">（待细化）</a></li></ul></div>
+        </div>
+      </div>
+      <div class="nav-item">
+        <a href="#about">About Us &amp; Contact</a>
+        <div class="mega">
+          <div><h4>About</h4><ul><li><a href="#about" data-en="Who We Are">我们是谁</a></li><li><a href="#about" data-en="What We Do">我们在做什么</a></li></ul></div>
+        </div>
+      </div>
+    </nav>
+
+    <div class="tools">
+      <span class="lang"><button data-lang="zh" aria-label="中文">中</button><span class="sep">/</span><button data-lang="en" aria-label="English">EN</button></span>
+      <button aria-label="搜索"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/></svg></button>
     </div>
-  </header>
+  </div>
+</header>
 
-  <main id="top">
-    <section class="page hero">
-      <div>
-        <div class="eyebrow">Anthropology · Culture · Learning</div>
-        <h1>
-          ZHI Communitas
-          <span>知域</span>
-        </h1>
+<!-- ====================== H-01 首屏轮播 ====================== -->
+<section class="hero" id="top">
+  <div id="slides"></div>
 
-        <p class="lead">
-          以人类学视角设计文化研学与跨文化教育项目。
-        </p>
+  <div class="hero-text">
+    <div class="eyebrow">ZHI Communitas · 知域</div>
+    <h1 data-en="Culture You Can Touch">触摸真正的文化</h1>
+    <p class="sub" data-en="Local Knowledge · Community Memory · Traditional Craft">地方知识 · 社区记忆 · 传统技艺</p>
+    <a class="btn light" href="#stories" data-en="Start Exploring <span class='arrow'>→</span>">开始探索 <span class="arrow">→</span></a>
+  </div>
 
-        <p class="lead-en">
-          We design anthropology-based cultural learning journeys connecting China, Europe, and local communities.
-        </p>
+  <div class="caption" id="caption"></div>
+  <div class="dots" id="dots"></div>
+</section>
 
-        <div class="actions">
-          <a class="btn primary" href="#projects">了解项目</a>
-          <a class="btn secondary" href="#contact">联系我们</a>
+<!-- ====================== H-03 Stories ====================== -->
+<section class="theme busy" id="stories">
+  <div class="bg"><img src="images/stories-banner.jpg" alt="村寨里的人们" loading="lazy"></div>
+  <div class="theme-inner">
+    <div class="kicker">Stories</div>
+    <h2 data-en="A Story">一个故事</h2>
+    <p data-en="Mounting a racehorse, lighting firecrackers. Water splashed at festivals, late-night talk by the fire pit, even a rare local dish: each holds the customs and memories of home. Step into the villages where people live, and hear their stories.">跨上赛马，点燃鞭炮。节日里泼洒的水，火塘边的夜话，甚至一道少见的菜肴，都藏着家乡的风物与旧事。走进他们生活的村寨，听听这些故事吧。</p>
+    <a class="btn light" href="#stories" data-en="Listen More Closely <span class='arrow'>→</span>">更真切地倾听 <span class="arrow">→</span></a>
+  </div>
+</section>
+<section class="rail-section">
+  <div class="rail-head"><h3 data-en="Stories from the Villages">村寨里的故事</h3><div class="rail-arrows"></div></div>
+  <div class="rail" data-type="story"></div>
+</section>
+
+<!-- ====================== H-02 Shop ====================== -->
+<section class="theme busy" id="shop">
+  <div class="bg"><img src="images/shop-banner.jpg" alt="手工织物" loading="lazy"></div>
+  <div class="theme-inner">
+    <div class="kicker">Shop</div>
+    <h2>object</h2>
+    <p data-en="A thread, a piece of cloth, a pair of hands give a people's memory a form you can touch. We present the work of makers across China, especially women artisans, and tell the stories of the people behind it.">一根线、一块布、一双手，让民族的记忆有了可以触摸的模样。我们呈现中国，尤其是女性手艺人的作品，也讲述作品背后的人。</p>
+    <a class="btn light" href="#shop" data-en="Look More Closely <span class='arrow'>→</span>">更仔细地观看 <span class="arrow">→</span></a>
+  </div>
+</section>
+<section class="rail-section shop">
+  <div class="rail-head"><h3 data-en="Selected Handmade Pieces">精选手作</h3><div class="rail-arrows"></div></div>
+  <div class="rail" data-type="shop"></div>
+</section>
+
+<!-- ====================== H-04 Journeys ====================== -->
+<section class="theme busy" id="journeys">
+  <div class="bg"><img src="images/journeys-banner.jpg" alt="寺院" loading="lazy"></div>
+  <div class="theme-inner">
+    <div class="kicker">Journeys</div>
+    <h2 data-en="A Journey">一段旅程</h2>
+    <p data-en="Follow mountain roads into villages, from busy markets to the chanting of monasteries, and spend time inside local life. Let the journey go beyond the scenery, into culture and everyday life.">循着山路走进村寨，从忙碌的集市到寺院的诵经声，让我们在当地人的生活里停留。让旅途深入风景，也深入文化与日常。</p>
+    <a class="btn light" href="#journeys" data-en="Arrive More Fully <span class='arrow'>→</span>">更切身地抵达 <span class="arrow">→</span></a>
+  </div>
+</section>
+<section class="rail-section">
+  <div class="rail-head"><h3 data-en="Featured Journeys">精选旅程</h3><div class="rail-arrows"></div></div>
+  <div class="rail" data-type="journey"></div>
+</section>
+
+<!-- ====================== H-05 Projects ====================== -->
+<section class="theme" id="projects">
+  <div class="bg"><img src="images/projects-banner.jpg" alt="火塘边的交谈" loading="lazy"></div>
+  <div class="theme-inner">
+    <div class="kicker">Projects</div>
+    <h2 data-en="An Event">一次活动</h2>
+    <p data-en="Weave a bag by hand, touch an old object marked by time, sit down and listen to local people tell their own stories. Wherever we are in the world, let us meet China.">亲手编一个包，触摸一件带着岁月痕迹的老物件，坐下来听当地人讲自己的故事……让我们在世界各地，遇见中国。</p>
+    <a class="btn light" href="#projects" data-en="Take Part <span class='arrow'>→</span>">更真实地参与 <span class="arrow">→</span></a>
+  </div>
+</section>
+<section class="rail-section">
+  <div class="rail-head"><h3 data-en="Upcoming Events">近期活动</h3><div class="rail-arrows"></div></div>
+  <div class="rail" data-type="event"></div>
+</section>
+
+<!-- ====================== H-06 关于我们 ====================== -->
+<section class="about" id="about">
+  <h2 data-en="What We Do">我们在做什么？</h2>
+  <p data-en="ZHI Communitas works with local knowledge, community memory and traditional crafts, and how they carry on in society today. We help people understand China through real objects, people, stories and everyday practices.">知域关注地方知识、社区记忆、传统技艺及其在当代社会中的传承，让公众通过具体的物件、人物、故事与生活实践认识中国。</p>
+  <a class="btn dark" href="#about" data-en="Contact Us <span class='arrow'>→</span>">联系我们 <span class="arrow">→</span></a>
+  <div class="logo-mark">知域 · ZHI</div>
+</section>
+
+<!-- ====================== 活动详情弹窗 ====================== -->
+<div class="modal" id="eventModal" hidden>
+  <div class="modal-backdrop" data-close></div>
+  <div class="modal-panel" role="dialog" aria-modal="true" aria-labelledby="evTitle">
+    <button class="modal-close" data-close aria-label="关闭">×</button>
+    <div id="eventBody"></div>
+  </div>
+</div>
+
+<footer>
+  <span>© 2026 ZHI Communitas 知域</span>
+  <span>Heidelberg · Frankfurt · Yunnan</span>
+</footer>
+
+<script>
+/* ==========================================================
+   首屏照片：要换照片、改顺序、加地点说明，只改这里
+   ========================================================== */
+let lang = "zh";
+try { if (localStorage.getItem("zhi-lang") === "en") lang = "en"; } catch (e) {}
+const L = (zh, en) => (lang === "en" ? en : zh);                         // 占位文字：按语言选一个
+const pick = (d, key) => (d ? (lang === "en" ? d[key + "En"] || d[key] : d[key]) || "" : "");  // 数据：英文没填就先用中文
+
+const HERO_PHOTOS = [
+  { src: "images/hero1.jpg", caption: "梅里雪山 · 云南", captionEn: "Meili Snow Mountain · Yunnan", position: "center 40%" },
+  { src: "images/hero2.jpg", caption: "泸沽湖 · 云南",   captionEn: "Lugu Lake · Yunnan",           position: "center" },
+  { src: "images/hero3.jpg", caption: "",                captionEn: "",                             position: "65% center" },
+  { src: "images/hero4.jpg", caption: "",                captionEn: "",                             position: "center" },
+  { src: "images/hero5.jpg", caption: "",                captionEn: "",                             position: "center 60%" },
+];
+const SLIDE_SECONDS = 6;   // 每张停留几秒
+
+/* ---------- 首屏轮播 ---------- */
+const hero = document.querySelector(".hero");
+const slidesEl = document.getElementById("slides");
+const dotsEl = document.getElementById("dots");
+const captionEl = document.getElementById("caption");
+
+HERO_PHOTOS.forEach((p, i) => {
+  const s = document.createElement("div");
+  s.className = "slide";
+  s.innerHTML = `<img src="${p.src}" alt="${p.caption || "云南影像"}" style="object-position:${p.position}" ${i ? 'loading="lazy"' : ""}>`;
+  slidesEl.appendChild(s);
+  const d = document.createElement("button");
+  d.className = "dot"; d.setAttribute("aria-label", `第 ${i + 1} 张`);
+  d.onclick = () => go(i);
+  dotsEl.appendChild(d);
+});
+
+let current = -1, timer = null, paused = false;
+function go(i) {
+  const n = HERO_PHOTOS.length;
+  i = (i + n) % n;
+  const slides = slidesEl.children, dots = dotsEl.children;
+  if (current >= 0) { slides[current].classList.remove("active"); dots[current].classList.remove("active"); }
+  current = i;
+  slides[i].classList.add("active");
+  dots[i].classList.add("active");
+  captionEl.textContent = pick(HERO_PHOTOS[i], "caption");
+  restart();
+}
+function restart() { clearTimeout(timer); timer = setTimeout(() => go(current + 1), SLIDE_SECONDS * 1000); }
+document.addEventListener("keydown", e => {
+  if (window.scrollY > window.innerHeight * .5) return;
+  if (e.key === "ArrowLeft") go(current - 1);
+  if (e.key === "ArrowRight") go(current + 1);
+});
+go(0);
+
+/* ---------- 导航：滚动后变白底；菜单悬停/点击展开 ---------- */
+const header = document.getElementById("header");
+const onScroll = () => header.classList.toggle("solid", window.scrollY > 60);
+window.addEventListener("scroll", onScroll, { passive: true }); onScroll();
+
+document.querySelectorAll(".nav-item").forEach(item => {
+  const open = () => { closeAll(); item.classList.add("open"); header.classList.add("menu-open"); };
+  item.addEventListener("mouseenter", open);
+  item.addEventListener("mouseleave", closeAll);
+  item.addEventListener("focusin", open);
+});
+function closeAll() {
+  document.querySelectorAll(".nav-item.open").forEach(x => x.classList.remove("open"));
+  header.classList.remove("menu-open");
+}
+document.addEventListener("keydown", e => { if (e.key === "Escape") closeAll(); });
+
+/* ==========================================================
+   卡片内容：现在是占位，以后按“填写表格.csv”替换
+   ========================================================== */
+const N = 7;   // 还没有照片的模块，先显示 7 张占位卡片
+
+/* ---------- Stories 卡片：地点、标题填好后，卡片上就会显示 ---------- */
+const STORIES = [
+  { img: "images/story-01.jpg", place: "", placeEn: "", title: "", titleEn: "" },
+  { img: "images/story-02.jpg", place: "", placeEn: "", title: "", titleEn: "" },
+  { img: "images/story-03.jpg", place: "", placeEn: "", title: "", titleEn: "" },
+  { img: "images/story-04.jpg", place: "", placeEn: "", title: "", titleEn: "" },
+  { img: "images/story-05.jpg", place: "", placeEn: "", title: "", titleEn: "" },
+  { img: "images/story-06.jpg", place: "", placeEn: "", title: "", titleEn: "" },
+];
+
+/* ---------- Journeys 卡片 ---------- */
+const JOURNEYS = [
+  { img: "images/journey-01.jpg", place: "", placeEn: "", name: "", nameEn: "", days: "" },
+  { img: "images/journey-02.jpg", place: "", placeEn: "", name: "", nameEn: "", days: "" },
+  { img: "images/journey-03.jpg", place: "", placeEn: "", name: "", nameEn: "", days: "" },
+  { img: "images/journey-04.jpg", place: "", placeEn: "", name: "", nameEn: "", days: "" },
+  { img: "images/journey-05.jpg", place: "", placeEn: "", name: "", nameEn: "", days: "" },
+  { img: "images/journey-06.jpg", place: "", placeEn: "", name: "", nameEn: "", days: "" },
+  { img: "images/journey-07.jpg", place: "", placeEn: "", name: "", nameEn: "", days: "" },
+];
+/* ---------- Projects 活动：新活动复制一整段 { ... } 加在最前面 ---------- */
+const EVENTS = [
+  {
+    cover: "images/event-01-still-1.jpg",
+    city: "曼海姆", cityEn: "Mannheim",
+    title: "《寻根》纪录片放映", titleEn: "In Search of Roots: Documentary Screening",
+    date: "2026.11.27 周五", dateEn: "Fri, 27 Nov 2026",
+    time: "19:15 – 21:00",
+    address: "曼海姆大学 O 135 教室（宫殿东翼）", addressEn: "O 135, Schloss Ostflügel, Uni Mannheim",
+    posters: [   // 英文海报在前
+      { src: "images/event-01-poster-en.jpg", label: "English" },
+      { src: "images/event-01-poster-zh.jpg", label: "中文" },
+    ],
+    stills: ["images/event-01-still-1.jpg", "images/event-01-still-2.jpg", "images/event-01-still-3.jpg"],
+    detail: {
+      en: {
+        kicker: "Documentary Screening · Mannheim",
+        title: "In Search of Roots: Documentary Screening at Uni Mannheim",
+        quote: "\"If you can walk, you can dance. If you can talk, you can sing.\"",
+        paras: [
+          "That's what they say in the Bai village in Yunnan, southwest China, where Maya Jilan Dong grew up. She left at 11 to train as a professional dancer, and went on to perform at Sadler's Wells with the Akram Khan Company.",
+          "In <em>In Search of Roots</em>, she turns the camera on herself. Over four years, she returns to villages across Yunnan to learn songs and dances from the elders who still carry them, and finds her way back to the place she came from.",
+          "Join us for the screening, followed by an open discussion.",
+        ],
+        facts: [
+          ["Date", "Friday, 27 November"],
+          ["Time", "19:15–21:00<br>Doors 19:15 · Film starts 19:30"],
+          ["Venue", "O 135 \"Saal der starken Marken\"<br>Schloss Ostflügel, Universität Mannheim"],
+          ["Entry", "Free entry, no registration needed"],
+        ],
+        film: "<strong>In Search of Roots (寻根)</strong> · Dir. Dong Jilan · China 2025 · 61 min<br>Chinese with English subtitles (OmeU) · Discussion in English<br>No knowledge of Chinese needed. Free and open to everyone.",
+        host: "Hosted by VCSWMA × ZHI Communitas",
+      },
+      zh: {
+        kicker: "纪录片放映 · 曼海姆",
+        title: "《寻根》纪录片放映 · 曼海姆大学",
+        quote: "“会走路就会跳舞，会说话就会唱歌。”",
+        paras: [
+          "这是董继兰（Maya Jilan Dong）长大的地方，云南白族村寨里流传的一句话。她 11 岁离开家乡学习专业舞蹈，后来随阿库·汉姆舞团（Akram Khan Company）登上伦敦萨德勒之井剧院（Sadler's Wells）的舞台。",
+          "在《寻根》中，她把镜头对准了自己。四年间，她回到云南各地的村寨，向仍然传承着歌舞的老人们学习，也找到了回到故乡的路。",
+          "欢迎来看放映，映后有开放讨论。",
+        ],
+        facts: [
+          ["日期", "11 月 27 日 周五"],
+          ["时间", "19:15–21:00<br>19:15 入场 · 19:30 开映"],
+          ["地点", "曼海姆大学 宫殿东翼 O 135 教室<br>“Saal der starken Marken”"],
+          ["入场", "免费入场，无需报名"],
+        ],
+        film: "<strong>《寻根》In Search of Roots</strong> · 导演 董继兰 · 中国 2025 · 61 分钟<br>中文对白，英文字幕 · 映后讨论使用英文<br>不懂中文也可以参加，免费向所有人开放。",
+        host: "主办：VCSWMA × 知域 ZHI Communitas",
+      },
+    },
+  },
+];
+
+const photo = d => d && d.img ? `<img class="main" src="${d.img}" alt="" loading="lazy" draggable="false">` : `<div class="ph main"></div>`;
+const pin = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 21s-7-6.2-7-11a7 7 0 0 1 14 0c0 4.8-7 11-7 11Z"/><circle cx="12" cy="10" r="2.5"/></svg>';
+const cal = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="5" width="18" height="16"/><path d="M3 10h18M8 3v4M16 3v4"/></svg>';
+const clock = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>';
+const moreCard = (wide) => `
+  <a class="card more ${wide ? "wide" : ""}" href="#">
+    <div class="${wide ? "event" : "card-img"}"><div class="more-inner"><div class="circle">→</div><div>${L("查看更多", "View More")}</div></div></div>
+  </a>`;
+
+const templates = {
+  shop: i => `
+    <a class="card" href="#">
+      <div class="card-img">
+        <div class="ph main"><span>${L("商品整体图", "Product photo")} ${i}</span></div>
+        <div class="ph detail"><span>${L("纹样 / 材料特写", "Pattern / material detail")} ${i}</span></div>
+        <div class="origin">${L("产地 · 省份", "Origin · Province")}</div>
+      </div>
+      <div class="card-title">${L("商品名称", "Product name")} ${i}</div>
+    </a>`,
+  story: (i, d = {}) => `
+    <a class="card" href="#">
+      <div class="card-img">
+        ${photo(d)}
+        <div class="story-text"><div class="place">${pick(d, "place") || L("地点", "Place")}</div><div class="name">${pick(d, "title") || L("故事标题 ", "Story title ") + i}</div></div>
+      </div>
+    </a>`,
+  journey: (i, d = {}) => `
+    <a class="card" href="#">
+      <div class="card-img">
+        ${photo(d)}
+        <div class="days">${d.days || L("天数", "Days")}</div>
+        <div class="journey-text"><div class="place">${pick(d, "place") || L("地点", "Place")}</div><div class="name">${pick(d, "name") || L("旅程名称 ", "Journey name ") + i}</div><span class="go">${L("探索该旅程", "Explore this journey")} →</span></div>
+      </div>
+    </a>`,
+  event: (i, d) => d ? `
+    <a class="card wide" href="#" data-event="${i - 1}">
+      <div class="event">
+        <div class="info">
+          <div class="place">${pick(d, "city")}</div>
+          <div class="name">${pick(d, "title")}</div>
+          <div class="row">${cal}${pick(d, "date")}</div>
+          <div class="row">${clock}${d.time}</div>
+          <div class="row">${pin}${pick(d, "address")}</div>
+          <div class="more">${L("活动详情", "Event details")} →</div>
+        </div>
+        <div class="pic"><img class="main" src="${d.cover}" alt="" loading="lazy" draggable="false" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover"></div>
+      </div>
+    </a>` : "",
+};
+
+function renderRail(rail) {
+  const t = rail.dataset.type;
+  let html = "";
+  const data = { story: STORIES, journey: JOURNEYS, event: EVENTS }[t];
+  const count = data ? data.length : N;
+  for (let i = 1; i <= count; i++) html += templates[t](i, data ? data[i - 1] : undefined);
+  rail.innerHTML = html + moreCard(t === "event");
+}
+
+document.querySelectorAll(".rail").forEach(rail => {
+  renderRail(rail);
+
+  /* 左右箭头 */
+  const arrows = rail.parentElement.querySelector(".rail-arrows");
+  arrows.innerHTML = '<button class="arrow-btn" aria-label="向左">←</button><button class="arrow-btn" aria-label="向右">→</button>';
+  const [l, r] = arrows.children;
+  const step = () => rail.querySelector(".card").offsetWidth + 20;
+  l.onclick = () => rail.scrollBy({ left: -step() * 2, behavior: "smooth" });
+  r.onclick = () => rail.scrollBy({ left: step() * 2, behavior: "smooth" });
+  const update = () => {
+    l.disabled = rail.scrollLeft < 4;
+    r.disabled = rail.scrollLeft + rail.clientWidth > rail.scrollWidth - 4;
+  };
+  rail.addEventListener("scroll", update, { passive: true }); update();
+
+  /* 鼠标拖动 */
+  let down = false, startX = 0, startLeft = 0, moved = false;
+  rail.addEventListener("pointerdown", e => {
+    if (e.pointerType !== "mouse") return;
+    down = true; moved = false; startX = e.clientX; startLeft = rail.scrollLeft;
+  });
+  window.addEventListener("pointermove", e => {
+    if (!down) return;
+    const dx = e.clientX - startX;
+    if (Math.abs(dx) > 5) { moved = true; rail.classList.add("dragging"); }
+    rail.scrollLeft = startLeft - dx;
+  });
+  window.addEventListener("pointerup", () => { down = false; rail.classList.remove("dragging"); });
+  rail.addEventListener("click", e => { if (moved) { e.preventDefault(); e.stopPropagation(); } }, true);
+  rail.addEventListener("click", e => { if (e.target.closest("a")?.getAttribute("href") === "#") e.preventDefault(); });
+});
+
+/* ---------- 活动详情弹窗 ---------- */
+const modal = document.getElementById("eventModal");
+const eventBody = document.getElementById("eventBody");
+let openEventIndex = -1, posterIndex = 0, lastFocus = null;
+
+function renderEvent() {
+  const ev = EVENTS[openEventIndex];
+  const t = ev.detail[lang] || ev.detail.zh;
+  eventBody.innerHTML = `
+    <div class="ev-grid">
+      <div class="ev-posters">
+        <img class="ev-poster-main" src="${ev.posters[posterIndex].src}" alt="${L("活动海报", "Event poster")}">
+        <div class="ev-thumbs">
+          ${ev.posters.map((p, k) => `<button class="${k === posterIndex ? "active" : ""}" data-poster="${k}"><img src="${p.src}" alt="">${p.label}</button>`).join("")}
         </div>
       </div>
-
-      <aside class="hero-card">
-        <div class="note">
-          <small>Field Notes / 田野笔记</small>
-          <h2>Learning begins with entering a place.</h2>
-          <p>
-            知域关注真实地方中的学习。我们将田野调查方法、地方文化知识与跨文化交流结合起来，
-            设计面向青年、家庭、学校与文化机构的研学项目和公共活动。
-          </p>
-
-          <div class="stamp">ZHI<br />2026</div>
-        </div>
-      </aside>
-    </section>
-
-    <section id="about" class="page">
-      <div class="section-head">
-        <div>
-          <div class="kicker">About</div>
-          <h2>在真实的地方关系中学习</h2>
-        </div>
-
-        <p class="section-intro">
-          知域从中国西南出发，也在欧洲城市中生长。通过访谈、观察、阅读、手工体验与社区参与，
-          我们希望帮助学习者进入具体的人、地方与关系，理解知识如何从真实经验中生成。
-        </p>
+      <div class="ev-info">
+        <div class="ev-kicker">${t.kicker}</div>
+        <h2 id="evTitle">${t.title}</h2>
+        <blockquote>${t.quote}</blockquote>
+        ${t.paras.map(x => `<p>${x}</p>`).join("")}
+        <dl class="ev-facts">${t.facts.map(([k, v]) => `<dt>${k}</dt><dd>${v}</dd>`).join("")}</dl>
+        <div class="ev-film">${t.film}</div>
+        <div class="ev-host">${t.host}</div>
       </div>
-
-      <div class="grid-3">
-        <article class="card">
-          <div class="num">01</div>
-          <h3>文化研学</h3>
-          <p>
-            围绕中国西南地方社会、民族文化与社区生活，设计面向青年学习者的深度研学项目。
-          </p>
-        </article>
-
-        <article class="card">
-          <div class="num">02</div>
-          <h3>田野训练</h3>
-          <p>
-            引导学生学习访谈、观察、记录、整理与表达，理解如何以人类学方式提出问题。
-          </p>
-        </article>
-
-        <article class="card">
-          <div class="num">03</div>
-          <h3>跨文化活动</h3>
-          <p>
-            在欧洲组织读书会、观鸟、文化体验与公共活动，连接青年社群与地方文化。
-          </p>
-        </article>
-      </div>
-    </section>
-
-    <section id="projects" class="page">
-      <div class="section-head">
-        <div>
-          <div class="kicker">Projects</div>
-          <h2>我们正在推进的项目</h2>
-        </div>
-
-        <p class="section-intro">
-          第一阶段项目集中在人类学研学、中国西南文化记录与欧洲青年文化社群。每个项目都从具体地方出发，
-          与在地伙伴共同设计，并留下可继续积累的记录。
-        </p>
-      </div>
-
-      <article class="project">
-        <div>
-          <div class="project-label">Featured Program</div>
-          <h3>云南人类学研学营</h3>
-        </div>
-
-        <div>
-          <p>
-            从丽江到泸沽湖，进入纳西、摩梭等地方文化语境。项目结合田野调查方法、地方文化学习与小组研究实践，
-            引导学生学习访谈、观察、记录与资料整理。
-          </p>
-
-          <div class="tags">
-            <span class="tag">丽江</span>
-            <span class="tag">泸沽湖</span>
-            <span class="tag">高中生研学</span>
-            <span class="tag">田野方法</span>
-          </div>
-        </div>
-      </article>
-
-      <article class="project">
-        <div>
-          <div class="project-label">Cultural Documentation</div>
-          <h3>摩梭文化记录项目</h3>
-        </div>
-
-        <div>
-          <p>
-            围绕口述史、影像记录与地方知识整理，知域与在地伙伴共同探索文化记录、公共传播与青年参与的可能性。
-          </p>
-
-          <div class="tags">
-            <span class="tag">口述史</span>
-            <span class="tag">影像记录</span>
-            <span class="tag">地方知识</span>
-            <span class="tag">公共传播</span>
-          </div>
-        </div>
-      </article>
-
-      <article class="project">
-        <div>
-          <div class="project-label">Cultural Exchange</div>
-          <h3>中欧文化教育合作</h3>
-        </div>
-
-        <div>
-          <p>
-            面向学校、旅行社、文化机构与社区组织，知域提供文化活动策划、教育项目设计与欧洲线下活动支持。
-          </p>
-
-          <div class="tags">
-            <span class="tag">学校合作</span>
-            <span class="tag">文化机构</span>
-            <span class="tag">社群活动</span>
-            <span class="tag">项目设计</span>
-          </div>
-        </div>
-      </article>
-    </section>
-
-    <section id="community" class="page">
-      <div class="community">
-        <div class="community-panel">
-          <div>
-            <div class="kicker" style="color: rgba(255,255,255,0.66);">Community Practice</div>
-            <h2>知之岛</h2>
-            <p>
-              知之岛是知域在欧洲的青年文化社群实践，目前在海德堡、曼海姆、法兰克福开展活动。
-              我们通过读书会、观鸟、城市漫游、文化体验与公共活动，探索年轻人在异乡如何重新连接知识、地方与彼此。
-            </p>
-          </div>
-
-          <div>
-            <a class="btn secondary" style="color:white;border-color:rgba(255,255,255,0.72);" href="#contact">
-              合作咨询
-            </a>
-          </div>
-        </div>
-
-        <div class="case-list">
-          <div class="case">
-            <strong>多语种阅读月</strong>
-            <span>在曼海姆、法兰克福、海德堡开展围绕语言与阅读的线下读书会。</span>
-          </div>
-
-          <div class="case">
-            <strong>法兰克福龙舟节云南文化摊位</strong>
-            <span>通过甲马拓印、东巴文体验与云南手工艺展示，进行公共文化推广。</span>
-          </div>
-
-          <div class="case">
-            <strong>海德堡观鸟活动</strong>
-            <span>以城市自然观察为入口，连接多物种兴趣、地方生活与青年社群。</span>
-          </div>
-
-          <div class="case">
-            <strong>新生欢迎会与城市活动</strong>
-            <span>为在德青年提供线下连接、生活经验交流与文化活动支持。</span>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <section id="team" class="page">
-      <div class="section-head">
-        <div>
-          <div class="kicker">Team</div>
-          <h2>团队</h2>
-        </div>
-
-        <p class="section-intro">
-          知域团队具有人类学、哲学、教育与地方文化研究背景，连接欧洲高校、中国西南在地资源与青年社群实践。
-        </p>
-      </div>
-
-      <div class="team">
-        <article class="person">
-          <div class="avatar"></div>
-          <h3>朱彦钰</h3>
-          <p>
-            海德堡大学人类学硕士。关注多物种民族志、文化教育与青年社群实践，负责项目策划、课程设计与欧洲合作。
-          </p>
-        </article>
-
-        <article class="person">
-          <div class="avatar"></div>
-          <h3>漆高峰</h3>
-          <p>
-            柏林自由大学人类学博士在读。负责学术设计、田野方法训练与项目研究框架。
-          </p>
-        </article>
-
-        <article class="person">
-          <div class="avatar"></div>
-          <h3>王思然</h3>
-          <p>
-            海德堡大学哲学硕士。负责课程讨论、文本阅读与跨文化活动设计。
-          </p>
-        </article>
-
-        <article class="person">
-          <div class="avatar"></div>
-          <h3>大白</h3>
-          <p>
-            云南民族大学人类学博士。负责云南地方文化研究、在地资源连接与田野支持。
-          </p>
-        </article>
-      </div>
-    </section>
-
-    <section id="contact" class="page">
-      <div class="contact-box">
-        <div>
-          <div class="kicker" style="color: rgba(255,255,255,0.66);">Contact</div>
-          <h2>欢迎联系我们</h2>
-          <p>
-            如果你对学校合作、研学项目咨询、文化活动共创、中国西南文化项目或欧洲线下活动支持感兴趣，
-            欢迎与知域联系。
-          </p>
-        </div>
-
-        <div class="contact-list">
-          <div class="contact-item">
-            <small>Email</small>
-            <strong>hello@zhicommunitas.com</strong>
-          </div>
-
-          <div class="contact-item">
-            <small>Website</small>
-            <strong>zhicommunitas.com</strong>
-          </div>
-
-          <div class="contact-item">
-            <small>Social Media</small>
-            <strong>Instagram / 小红书 / 微信公众号：ZHI Communitas 知域</strong>
-          </div>
-
-          <div class="contact-item">
-            <small>Based in</small>
-            <strong>Heidelberg · Frankfurt · Yunnan</strong>
-          </div>
-        </div>
-      </div>
-    </section>
-  </main>
-
-  <footer class="page">
-    <div class="footer-inner">
-      <div>© 2026 ZHI Communitas 知域</div>
-      <div>Anthropology-based cultural learning journeys.</div>
     </div>
-  </footer>
+    <div class="ev-stills">${ev.stills.map(src => `<img src="${src}" alt="" loading="lazy">`).join("")}</div>`;
+}
+function openEvent(i) {
+  openEventIndex = i; posterIndex = 0; lastFocus = document.activeElement;
+  renderEvent();
+  modal.hidden = false; document.body.classList.add("no-scroll");
+  modal.querySelector(".modal-panel").scrollTop = 0;
+  modal.querySelector(".modal-close").focus();
+}
+function closeEvent() {
+  modal.hidden = true; document.body.classList.remove("no-scroll"); openEventIndex = -1;
+  if (lastFocus) lastFocus.focus();
+}
+document.addEventListener("click", e => {
+  const card = e.target.closest("[data-event]");
+  if (card) { e.preventDefault(); openEvent(+card.dataset.event); return; }
+  if (e.target.closest("[data-close]")) closeEvent();
+  const pb = e.target.closest("[data-poster]");
+  if (pb) { posterIndex = +pb.dataset.poster; renderEvent(); }
+});
+document.addEventListener("keydown", e => { if (e.key === "Escape" && !modal.hidden) closeEvent(); });
+
+/* ==========================================================
+   中 / EN 切换
+   网页里的英文写在各元素的 data-en="..." 里；
+   卡片和照片地点的英文写在上面数据的 xxxEn 栏里
+   ========================================================== */
+function setLang(next) {
+  lang = next;
+  document.documentElement.lang = lang === "en" ? "en" : "zh-CN";
+  document.querySelectorAll("[data-en]").forEach(el => {
+    if (el.dataset.zh === undefined) el.dataset.zh = el.innerHTML;
+    el.innerHTML = lang === "en" ? el.dataset.en : el.dataset.zh;
+  });
+  document.querySelectorAll(".lang button").forEach(b => b.classList.toggle("active", b.dataset.lang === lang));
+  document.querySelectorAll(".rail").forEach(rail => { renderRail(rail); rail.dispatchEvent(new Event("scroll")); });
+  if (current >= 0) captionEl.textContent = pick(HERO_PHOTOS[current], "caption");
+  if (openEventIndex >= 0) renderEvent();
+  try { localStorage.setItem("zhi-lang", lang); } catch (e) {}
+}
+document.querySelectorAll(".lang button").forEach(b => b.addEventListener("click", () => setLang(b.dataset.lang)));
+setLang(lang);
+</script>
 </body>
 </html>
