@@ -615,9 +615,7 @@ const templates = {
     <a class="card" href="#">
       <div class="card-img">
         ${d.img ? photo(d) : `<div class="ph main"><span>${L("商品整体图", "Product photo")} ${i}</span></div>`}
-        ${d.detail ? `<img class="ph detail" src="${d.detail}" alt="" loading="lazy" draggable="false">` : d.img ? "" : `<div class="ph detail"><span>${L("纹样 / 材料特写", "Pattern / material detail")} ${i}</span></div>`}
-        <div class="origin">${pick(d, "origin") || L("产地 · 省份", "Origin · Province")}</div>
-      </div>
+        ${d.detail ? `<img class="ph detail" src="${d.detail}" alt="" loading="lazy" draggable="false">` : d.img ? "" : `<div class="ph detail"><span>${L("纹样 / 材料特写", "Pattern / material detail")} ${i}</span></div>`}      </div>
       <div class="card-title">${pick(d, "name") || L("商品名称", "Product name") + " " + i}</div>
     </a>`,
   story: (i, d = {}) => `
