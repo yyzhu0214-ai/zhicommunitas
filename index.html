@@ -188,6 +188,7 @@
   /* Shop：悬停换细节图 */
   .card-img .ph.detail { opacity: 0; background: linear-gradient(135deg, #8b6f55, #4d3b2c); }
   .shop .card:hover .ph.detail { opacity: 1; }
+  img.ph.detail { width: 100%; height: 100%; object-fit: cover; }
   .origin { position: absolute; left: 16px; bottom: 14px; z-index: 2; color: var(--white); font-family: var(--serif); font-size: 13px; letter-spacing: .14em; }
   .card-title { margin-top: 14px; font-size: 15px; letter-spacing: .04em; }
 
@@ -515,6 +516,16 @@ document.addEventListener("keydown", e => { if (e.key === "Escape") closeAll(); 
    ========================================================== */
 const N = 7;   // 还没有照片的模块，先显示 7 张占位卡片
 
+/* ---------- Shop 卡片：detail 填细节图路径后，鼠标悬停会切换到细节图 ---------- */
+const SHOP = [
+  { img: "images/shop-01.jpg", detail: "", name: "", nameEn: "", origin: "", originEn: "" },
+  { img: "images/shop-02.jpg", detail: "", name: "", nameEn: "", origin: "", originEn: "" },
+  { img: "images/shop-03.jpg", detail: "", name: "", nameEn: "", origin: "", originEn: "" },
+  { img: "images/shop-04.jpg", detail: "", name: "", nameEn: "", origin: "", originEn: "" },
+  { img: "images/shop-05.jpg", detail: "", name: "", nameEn: "", origin: "", originEn: "" },
+  { img: "images/shop-06.jpg", detail: "", name: "", nameEn: "", origin: "", originEn: "" },
+];
+
 /* ---------- Stories 卡片：地点、标题填好后，卡片上就会显示 ---------- */
 const STORIES = [
   { img: "images/story-01.jpg", place: "", placeEn: "", title: "", titleEn: "" },
@@ -600,14 +611,14 @@ const moreCard = (wide) => `
   </a>`;
 
 const templates = {
-  shop: i => `
+  shop: (i, d = {}) => `
     <a class="card" href="#">
       <div class="card-img">
-        <div class="ph main"><span>${L("商品整体图", "Product photo")} ${i}</span></div>
-        <div class="ph detail"><span>${L("纹样 / 材料特写", "Pattern / material detail")} ${i}</span></div>
-        <div class="origin">${L("产地 · 省份", "Origin · Province")}</div>
+        ${d.img ? photo(d) : `<div class="ph main"><span>${L("商品整体图", "Product photo")} ${i}</span></div>`}
+        ${d.detail ? `<img class="ph detail" src="${d.detail}" alt="" loading="lazy" draggable="false">` : d.img ? "" : `<div class="ph detail"><span>${L("纹样 / 材料特写", "Pattern / material detail")} ${i}</span></div>`}
+        <div class="origin">${pick(d, "origin") || L("产地 · 省份", "Origin · Province")}</div>
       </div>
-      <div class="card-title">${L("商品名称", "Product name")} ${i}</div>
+      <div class="card-title">${pick(d, "name") || L("商品名称", "Product name") + " " + i}</div>
     </a>`,
   story: (i, d = {}) => `
     <a class="card" href="#">
@@ -643,7 +654,7 @@ const templates = {
 function renderRail(rail) {
   const t = rail.dataset.type;
   let html = "";
-  const data = { story: STORIES, journey: JOURNEYS, event: EVENTS }[t];
+  const data = { shop: SHOP, story: STORIES, journey: JOURNEYS, event: EVENTS }[t];
   const count = data ? data.length : N;
   for (let i = 1; i <= count; i++) html += templates[t](i, data ? data[i - 1] : undefined);
   rail.innerHTML = html + moreCard(t === "event");
