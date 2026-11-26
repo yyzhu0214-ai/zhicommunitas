@@ -538,13 +538,13 @@ const STORIES = [
 
 /* ---------- Journeys 卡片 ---------- */
 const JOURNEYS = [
-  { img: "images/journey-01.jpg", place: "", placeEn: "", name: "", nameEn: "", days: "" },
-  { img: "images/journey-02.jpg", place: "", placeEn: "", name: "", nameEn: "", days: "" },
-  { img: "images/journey-03.jpg", place: "", placeEn: "", name: "", nameEn: "", days: "" },
-  { img: "images/journey-04.jpg", place: "", placeEn: "", name: "", nameEn: "", days: "" },
-  { img: "images/journey-05.jpg", place: "", placeEn: "", name: "", nameEn: "", days: "" },
-  { img: "images/journey-06.jpg", place: "", placeEn: "", name: "", nameEn: "", days: "" },
-  { img: "images/journey-07.jpg", place: "", placeEn: "", name: "", nameEn: "", days: "" },
+  { img: "images/journey-01.jpg", place: "丽江", placeEn: "Lijiang", name: "纳西之境：从东巴文到虎跳峡", nameEn: "Land of the Naxi: From Dongba Script to Tiger Leaping Gorge", days: "3–5 天", daysEn: "3–5 Days" },
+  { img: "images/journey-02.jpg", place: "香格里拉", placeEn: "Shangri-La", name: "香格里拉藏文化与高原之旅", nameEn: "Shangri-La: Tibetan Culture & Highlands", days: "5–7 天", daysEn: "5–7 Days" },
+  { img: "images/journey-03.jpg", place: "勐海", placeEn: "Menghai", name: "古茶树下：勐海普洱茶之旅", nameEn: "Beneath Ancient Tea Trees: A Pu'er Journey", days: "3–5 天", daysEn: "3–5 Days" },
+  { img: "images/journey-04.jpg", place: "西双版纳", placeEn: "Xishuangbanna", name: "西双版纳手艺之旅：织、染、绣、造纸", nameEn: "Xishuangbanna: Craft Journey", days: "3–5 天", daysEn: "3–5 Days" },
+  { img: "images/journey-05.jpg", place: "泸沽湖", placeEn: "Lugu Lake", name: "泸沽湖：走近摩梭母系大家庭", nameEn: "Living with a Mosuo Matrilineal Family", days: "3–6 天", daysEn: "3–6 Days" },
+  { img: "images/journey-06.jpg", place: "奔子栏", placeEn: "Benzilan", name: "指尖上的香格里拉：藏香与黑陶之旅", nameEn: "Shangri-La by Hand: Incense & Black Pottery", days: "3 天", daysEn: "3 Days" },
+  { img: "images/journey-07.jpg", place: "德钦", placeEn: "Deqin", name: "三江并流：走进世界自然遗产", nameEn: "Where Three Great Rivers Run: A UNESCO World Heritage Journey", days: "3–5 天", daysEn: "3–5 Days" },
 ];
 /* ---------- Projects 活动：新活动复制一整段 { ... } 加在最前面 ---------- */
 const EVENTS = [
@@ -629,7 +629,7 @@ const templates = {
     <a class="card" href="#">
       <div class="card-img">
         ${photo(d)}
-        <div class="days">${d.days || L("天数", "Days")}</div>
+        <div class="days">${pick(d, "days") || L("天数", "Days")}</div>
         <div class="journey-text"><div class="place">${pick(d, "place") || L("地点", "Place")}</div><div class="name">${pick(d, "name") || L("旅程名称 ", "Journey name ") + i}</div><span class="go">${L("探索该旅程", "Explore this journey")} →</span></div>
       </div>
     </a>`,
